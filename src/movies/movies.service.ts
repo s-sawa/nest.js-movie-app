@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Movie } from './movie.model';
+import { CreateMovieDto } from './DTO/create-movie.dto';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class MoviesService {
@@ -9,9 +11,17 @@ export class MoviesService {
     return this.movies;
   }
   findById(id: number): Movie {
-    return this.movies.find((movie) => movie.id === id);
+    const found = this.movies.find((movie) => movie.id === id);
+    if (!found) {
+      throw new NotFoundException(); // 見つからないときに404レスポンスを返す
+    }
+    return found;
   }
-  create(movie: Movie): Movie {
+  create(createMovieDto: CreateMovieDto): Movie {
+    const movie: Movie = {
+      id: uuid(),
+      ...createMovieDto,
+    };
     this.movies.push(movie);
     return movie;
   }

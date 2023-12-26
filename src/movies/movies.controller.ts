@@ -4,11 +4,13 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { Movie } from './movie.model';
+import { CreateMovieDto } from './DTO/create-movie.dto';
 
 @Controller('movies')
 export class MoviesController {
@@ -19,35 +21,25 @@ export class MoviesController {
   }
 
   @Get(':id')
-  findById(@Param('id') id: number): Movie {
+  findById(@Param('id', ParseUUIDPipe) id: number): Movie {
     return this.moviesService.findById(id);
   }
 
   @Post()
-  create(
-    @Body('id') id: number,
-    @Body('title') title: string,
-    @Body('description') description: string,
-    @Body('rating') rating: number,
-    @Body('review') review: string,
-  ): Movie {
-    const movie: Movie = {
-      id: id,
-      title,
-      description,
-      rating,
-      review,
-    };
-    return this.moviesService.create(movie);
+  create(@Body() createMovieDto: CreateMovieDto): Movie {
+    return this.moviesService.create(createMovieDto);
   }
 
   @Patch(':id/rating')
-  updateRating(@Param('id') id: number, @Body('rating') newRating: number) {
+  updateRating(
+    @Param('id', ParseUUIDPipe) id: number,
+    @Body('rating') newRating: number,
+  ) {
     return this.moviesService.updateRating(id, newRating);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number): void {
+  delete(@Param('id', ParseUUIDPipe) id: number): void {
     this.moviesService.delete(id);
   }
 }
