@@ -1,26 +1,14 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
-  PipeTransform,
   Post,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
-import { Movie, Rating } from './movie.model';
-/*
-  リクエストデータに対する変換はコントローラ内に書く
-  映画の評価の更新データはリクエストボディで文字列で受け取り、
-  パイプを用いて受け取った文字列に対応するバリューを返す必要がある
-  */
-
-export class RatingPipe implements PipeTransform {
-  transform(value: string): Rating {
-    const rating = Rating[value as keyof typeof Rating];
-    return rating;
-  }
-}
+import { Movie } from './movie.model';
 
 @Controller('movies')
 export class MoviesController {
@@ -40,7 +28,7 @@ export class MoviesController {
     @Body('id') id: number,
     @Body('title') title: string,
     @Body('description') description: string,
-    @Body('rating') rating: Rating,
+    @Body('rating') rating: number,
     @Body('review') review: string,
   ): Movie {
     const movie: Movie = {
@@ -54,10 +42,12 @@ export class MoviesController {
   }
 
   @Patch(':id/rating')
-  updateRating(
-    @Param('id') id: number,
-    @Body('rating', RatingPipe) newRating: Rating,
-  ) {
+  updateRating(@Param('id') id: number, @Body('rating') newRating: number) {
     return this.moviesService.updateRating(id, newRating);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: number): void {
+    this.moviesService.delete(id);
   }
 }

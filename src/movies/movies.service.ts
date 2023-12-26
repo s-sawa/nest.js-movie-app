@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Movie, Rating } from './movie.model';
+import { Movie } from './movie.model';
 
 @Injectable()
 export class MoviesService {
@@ -16,9 +16,12 @@ export class MoviesService {
     return movie;
   }
 
-  updateRating(id: number, newRating: Rating): Movie {
+  updateRating(id: number, newRating: number): Movie {
     const movie = this.findById(id);
     movie.rating = newRating;
     return movie;
+  }
+  delete(id: number): void {
+    this.movies = this.movies.filter((movie) => movie.id !== id);
   }
 }
