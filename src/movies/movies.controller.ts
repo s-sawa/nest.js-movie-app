@@ -9,8 +9,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
-import { Movie } from './movie.model';
 import { CreateMovieDto } from './DTO/create-movie.dto';
+import { Movie } from '../entities/movie.entity';
 
 @Controller('movies')
 export class MoviesController {
@@ -26,8 +26,8 @@ export class MoviesController {
   }
 
   @Post()
-  create(@Body() createMovieDto: CreateMovieDto): Movie {
-    return this.moviesService.create(createMovieDto);
+  async create(@Body() createMovieDto: CreateMovieDto): Promise<Movie> {
+    return await this.moviesService.create(createMovieDto);
   }
 
   @Patch(':id/rating')

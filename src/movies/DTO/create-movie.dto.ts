@@ -1,12 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsIn,
-  IsInt,
-  IsNotEmpty,
-  IsString,
-  MaxLength,
-  Min,
-} from 'class-validator';
+import { IsIn, IsInt, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreateMovieDto {
   @IsString() // 文字列のバリデーション

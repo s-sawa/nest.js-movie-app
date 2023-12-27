@@ -7,6 +7,7 @@ module.exports = {
   database: 'postgres',
   autoLoadEntities: true,
   // migrationファイル作成時にどのentityファイルを読み込むかの設定
+  // entities: ['dist/src/entities/*.entity.js'],
   entities: ['dist/entities/*.entity.js'],
   // どのmigrationファイルでmigrationを行うかの設定
   migrations: ['dist/migrations/*.js'],

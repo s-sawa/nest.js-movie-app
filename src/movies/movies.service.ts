@@ -1,10 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Movie } from './movie.model';
+// import { Movie } from './movie.model';
 import { CreateMovieDto } from './DTO/create-movie.dto';
-import { v4 as uuid } from 'uuid';
+import { MovieRepository } from './movie.repository';
+import { Movie } from '../entities/movie.entity';
+// import { Movie } from 'src/entities/movie.entity';
 
+Movie;
 @Injectable()
 export class MoviesService {
+  constructor(private readonly movieRepository: MovieRepository) {}
   private movies: Movie[] = [];
 
   findAll(): Movie[] {
@@ -17,13 +21,8 @@ export class MoviesService {
     }
     return found;
   }
-  create(createMovieDto: CreateMovieDto): Movie {
-    const movie: Movie = {
-      id: uuid(),
-      ...createMovieDto,
-    };
-    this.movies.push(movie);
-    return movie;
+  async create(createMovieDto: CreateMovieDto): Promise<Movie> {
+    return await this.movieRepository.createMovie(createMovieDto);
   }
 
   updateRating(id: number, newRating: number): Movie {
