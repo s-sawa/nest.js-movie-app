@@ -15,14 +15,15 @@ import { Movie } from '../entities/movie.entity';
 @Controller('movies')
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
+
   @Get()
-  findAll(): Movie[] {
-    return this.moviesService.findAll();
+  async findAll(): Promise<Movie[]> {
+    return await this.moviesService.findAll();
   }
 
   @Get(':id')
-  findById(@Param('id', ParseUUIDPipe) id: number): Movie {
-    return this.moviesService.findById(id);
+  async findById(@Param('id', ParseUUIDPipe) id: number): Promise<Movie> {
+    return await this.moviesService.findById(id);
   }
 
   @Post()
@@ -31,15 +32,15 @@ export class MoviesController {
   }
 
   @Patch(':id/rating')
-  updateRating(
+  async updateRating(
     @Param('id', ParseUUIDPipe) id: number,
     @Body('rating') newRating: number,
-  ) {
-    return this.moviesService.updateRating(id, newRating);
+  ): Promise<Movie> {
+    return await this.moviesService.updateRating(id, newRating);
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: number): void {
-    this.moviesService.delete(id);
+  async delete(@Param('id', ParseUUIDPipe) id: number): Promise<void> {
+    await this.moviesService.delete(id);
   }
 }

@@ -11,11 +11,11 @@ export class MoviesService {
   constructor(private readonly movieRepository: MovieRepository) {}
   private movies: Movie[] = [];
 
-  findAll(): Movie[] {
-    return this.movies;
+  async findAll(): Promise<Movie[]> {
+    return await this.movieRepository.find();
   }
-  findById(id: number): Movie {
-    const found = this.movies.find((movie) => movie.id === id);
+  async findById(id: number): Promise<Movie> {
+    const found = await this.movieRepository.findOne(id);
     if (!found) {
       throw new NotFoundException(); // 見つからないときに404レスポンスを返す
     }
@@ -25,12 +25,14 @@ export class MoviesService {
     return await this.movieRepository.createMovie(createMovieDto);
   }
 
-  updateRating(id: number, newRating: number): Movie {
-    const movie = this.findById(id);
+  async updateRating(id: number, newRating: number): Promise<Movie> {
+    const movie = await this.findById(id);
     movie.rating = newRating;
+    await this.movieRepository.save(movie);
     return movie;
   }
-  delete(id: number): void {
-    this.movies = this.movies.filter((movie) => movie.id !== id);
+
+  async delete(id: number): Promise<void> {
+    await this.movieRepository.delete({ id });
   }
 }
