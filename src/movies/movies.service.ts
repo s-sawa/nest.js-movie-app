@@ -28,6 +28,7 @@ export class MoviesService {
   async updateRating(id: number, newRating: number): Promise<Movie> {
     const movie = await this.findById(id);
     movie.rating = newRating;
+    movie.updatedAt = new Date().toISOString();
     await this.movieRepository.save(movie);
     return movie;
   }

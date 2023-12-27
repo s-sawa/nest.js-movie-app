@@ -14,6 +14,6 @@ export class Movie {
   review: string;
   @Column()
   createdAt: string;
-  //   @Column()
-  //   updatedAt: string;
+  @Column({ nullable: true })
+  updatedAt: string;
 }
