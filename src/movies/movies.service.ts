@@ -1,13 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-// import { Movie } from './movie.model';
 import { CreateMovieDto } from './DTO/create-movie.dto';
 import { MovieRepository } from './movie.repository';
 import { Movie } from '../entities/movie.entity';
-// import { Movie } from 'src/entities/movie.entity';
 
 Movie;
 @Injectable()
 export class MoviesService {
+  // MovieRepository型のmovieRepositoryプロパティを定義
   constructor(private readonly movieRepository: MovieRepository) {}
   private movies: Movie[] = [];
 
